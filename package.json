@@ -1,0 +1,25 @@
+{
+  "name": "noticias",
+  "version": "1.0.0",
+  "description": "",
+  "main": "noticias.js",
+  "dependencies": {
+    "scraperjs": "^1.0.1"
+  },
+  "devDependencies": {
+    "scraperjs": "^1.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elneto/nodenoti.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elneto/nodenoti/issues"
+  },
+  "homepage": "https://github.com/elneto/nodenoti#readme"
+}
