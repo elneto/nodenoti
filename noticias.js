@@ -5,8 +5,10 @@ mongoose.connect('mongodb://localhost:27017/noti');
 
 //Entrada is a model
 var Entrada = mongoose.model('Entrada', require('./entrada'));
+//var urlCrawl = 'http://www.un.org/spanish/News/latest-headlines.asp';
+var urlCrawl = 'http://localhost:8008/test.html';
 
-scraperjs.StaticScraper.create('http://www.un.org/spanish/News/latest-headlines.asp')
+scraperjs.StaticScraper.create(urlCrawl)
     .scrape(function($) {
         return $("p a").map(function() {
         	//console.log($(this));
@@ -16,7 +18,7 @@ scraperjs.StaticScraper.create('http://www.un.org/spanish/News/latest-headlines.
     })
     .then(function(news) {
         //console.log(news);
-        listArray(news);
+        listArray(news); 
     });
 
 function completa(url){
@@ -42,3 +44,4 @@ function listArray(news){
 		console.log(ent);
 	});
 }
+
