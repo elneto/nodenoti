@@ -1,5 +1,6 @@
 var scraperjs = require("scraperjs");
 var mongoose = require("mongoose");
+var utils = require("./utils");
 
 mongoose.connect('mongodb://localhost:27017/noti',  {server:{auto_reconnect:true}});
 
@@ -7,10 +8,6 @@ mongoose.connect('mongodb://localhost:27017/noti',  {server:{auto_reconnect:true
 var Entrada = mongoose.model('Entrada', require('./entrada'));
 //var urlCrawl = 'http://www.un.org/spanish/News/latest-headlines.asp';
 var urlCrawl = 'http://localhost:8008/test.html';
-
-var entriesToSave = 0;
-var foundNews = 0;
-var oldNews = 0;
 
 scraperjs.StaticScraper.create(urlCrawl)
     .scrape(function($) {
@@ -22,54 +19,41 @@ scraperjs.StaticScraper.create(urlCrawl)
         listArray(news); 
     });
 
-function completa(url){
-	return 'http://www.un.org' + url;
-}
-
-function codigo(url){
-	return url.split("=")[1];
-}
-
-function handleError(err){
-	console.error("Error: " + err); 
-	return 1; //error
-}
-
 function tryCloseMongo(){
-	if (entriesToSave <= 0){
-  	console.log("disconnect from mongo, entriesToSave: " + entriesToSave);
+	if (utils.entriesToSave <= 0){
+  	console.log("disconnect from mongo, entriesToSave: " + utils.entriesToSave);
 		mongoose.disconnect();
 		return 0;
   }
 }
 
 function listArray(news){
-	foundNews = news.length-1; //el de mas noticias
-	console.log("Found news: " + foundNews);
+	utils.foundNews = news.length-1; //el de mas noticias
+	console.log("Found news: " + utils.foundNews);
 	news.forEach(function(val){
 
 		var ent = new Entrada({
 			title: val.text(),
-			link: completa(val.attr('href')),
-			code: codigo(val.attr('href'))
+			link: utils.completa(val.attr('href')),
+			code: utils.codigo(val.attr('href'))
 		});
 
 		//let's see if the code is saved already
 		var query  = Entrada.where({ code: ent.code });
 		query.findOne(function (err, entry) {
-		  if (err) return handleError(err);
+		  if (err) return utils.handleError(err);
 		  if (!entry && ent.code !== undefined) { //if not found
 		    // doc may be null if no document matched
-		    console.log("Let's save " + (++entriesToSave) + " " + ent.title + " " + ent.code);
+		    console.log("Let's save " + (++utils.entriesToSave) + " " + ent.title + " " + ent.code);
 		    ent.save(function (err) {
-				  if (err) return handleError(err);
-				  
-				  --entriesToSave;
+				  if (err) return utils.handleError(err);
+
+				  --utils.entriesToSave;
 				  tryCloseMongo();
 				});
 		  } else if (entry){
-		  	console.log("Old news: " + (++oldNews));
-		  	if (oldNews == foundNews){ //nothing new
+		  	console.log("Old news: " + (++utils.oldNews));
+		  	if (utils.oldNews == utils.foundNews){ //nothing new
 		  		tryCloseMongo();
 		  	}
 		  }
