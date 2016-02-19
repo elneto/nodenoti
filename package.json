@@ -4,10 +4,8 @@
   "description": "",
   "main": "noticias.js",
   "dependencies": {
+    "mongoose": "^4.4.4",
     "scraperjs": "^1.0.1"
-  },
-  "devDependencies": {
-    "scraperjs": "^1.2.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/elneto/nodenoti/issues"
   },
-  "homepage": "https://github.com/elneto/nodenoti#readme"
+  "homepage": "https://github.com/elneto/nodenoti#readme",
+  "devDependencies": {
+    "jshint": "^2.9.1"
+  }
 }
