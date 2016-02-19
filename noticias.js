@@ -1,10 +1,10 @@
 var scraperjs = require("scraperjs");
 var mongoose = require("mongoose");
 
-//mongoose.connect('mongodb://localhost:27017/noti');
+mongoose.connect('mongodb://localhost:27017/noti');
 
 //Entrada is a model
-//var Entrada = mongoose.model('Entrada', require('./entrada'));
+var Entrada = mongoose.model('Entrada', require('./entrada'));
 
 scraperjs.StaticScraper.create('http://www.un.org/spanish/News/latest-headlines.asp')
     .scrape(function($) {
@@ -28,9 +28,17 @@ function codigo(url){
 }
 
 function listArray(news){
-	news.forEach(function(val, index){
-		console.log("title: " + val.text());
-		console.log("href: " + completa(val.attr('href')));
-		console.log("codigo: " + codigo(val.attr('href')));
+	news.forEach(function(val){
+		/*console.log("title: " + val.text());
+		console.log("link: " + completa(val.attr('href')));
+		console.log("code: " + codigo(val.attr('href')));*/
+
+		var ent = new Entrada({
+			title: val.text(),
+			link: completa(val.attr('href')),
+			code: codigo(val.attr('href'))
+		});
+
+		console.log(ent);
 	});
 }

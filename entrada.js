@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var entradaSchema = {
-    titulo: { type: String, required: true },
+    title: { type: String, required: true },
     link: { type: String, match: /^http:\/\//i },
     code: { type: String},
     date: { type: Date, default: Date.now }
