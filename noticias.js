@@ -7,8 +7,8 @@ mongoose.connect('mongodb://localhost:27017/noti',  {server:{auto_reconnect:true
 
 //Entrada is a model
 var Entrada = mongoose.model('Entrada', require('./entrada'));
-//var urlCrawl = 'http://www.un.org/spanish/News/latest-headlines.asp';
-var urlCrawl = 'http://localhost:8008/test.html';
+var urlCrawl = 'http://www.un.org/spanish/News/latest-headlines.asp';
+//var urlCrawl = 'http://localhost:8008/test.html';
 
 scraperjs.StaticScraper.create(urlCrawl)
     .scrape(function($) {
@@ -53,7 +53,7 @@ function listArray(news){
 				  // setup e-mail data with unicode symbols
 					mail.mailOptions = {
 					    from: 'Neto News 👥 <yo@ernestoaraiza.com>', // sender address
-					    to: 'yo@ernestoaraiza.com, ernesto.araiza@gmail.com', // list of receivers
+					    to: 'yo@ernestoaraiza.com, araiza@un.org, moran1@un.org', // list of receivers
 					    subject: ent.title + ' ✔', // Subject line
 					    text: ent.title + ' ' + ent.link + ' ' +'🐴', // plaintext body
 					    html: '<a href="'+ ent.link + '">' + ent.title +' 🐴</a>' // html body
@@ -62,7 +62,7 @@ function listArray(news){
 				  tryCloseMongo();
 				});
 		  } else if (entry){
-		  	console.log("Old news: " + (++utils.oldNews));
+		  	console.log("Old news: " + (++utils.oldNews) + " " + ent.title);
 		  	if (utils.oldNews == utils.foundNews){ //nothing new
 		  		tryCloseMongo();
 		  	}
