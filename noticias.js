@@ -36,7 +36,7 @@ function handleError(err){
 }
 
 function tryCloseMongo(){
-	if (--entriesToSave <= 0){
+	if (entriesToSave <= 0){
   	console.log("disconnect from mongo, entriesToSave: " + entriesToSave);
 		mongoose.disconnect();
 		return 0;
@@ -63,6 +63,8 @@ function listArray(news){
 		    console.log("Let's save " + (++entriesToSave) + " " + ent.title + " " + ent.code);
 		    ent.save(function (err) {
 				  if (err) return handleError(err);
+				  
+				  --entriesToSave;
 				  tryCloseMongo();
 				});
 		  } else if (entry){
