@@ -1,6 +1,7 @@
 var scraperjs = require("scraperjs");
 var mongoose = require("mongoose");
 var utils = require("./utils");
+var mail = require("./mail");
 
 mongoose.connect('mongodb://localhost:27017/noti',  {server:{auto_reconnect:true}});
 
@@ -49,6 +50,15 @@ function listArray(news){
 				  if (err) return utils.handleError(err);
 
 				  --utils.entriesToSave;
+				  // setup e-mail data with unicode symbols
+					mail.mailOptions = {
+					    from: 'Neto News 👥 <yo@ernestoaraiza.com>', // sender address
+					    to: 'yo@ernestoaraiza.com, ernesto.araiza@gmail.com', // list of receivers
+					    subject: ent.title + ' ✔', // Subject line
+					    text: ent.title + ' ' + ent.link + ' ' +'🐴', // plaintext body
+					    html: '<a href="'+ ent.link + '">' + ent.title +' 🐴</a>' // html body
+					};
+				  mail.send(mail.mailOptions);
 				  tryCloseMongo();
 				});
 		  } else if (entry){

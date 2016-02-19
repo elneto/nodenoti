@@ -5,6 +5,7 @@
   "main": "noticias.js",
   "dependencies": {
     "mongoose": "^4.4.4",
+    "nodemailer": "^2.2.0",
     "scraperjs": "^1.0.1"
   },
   "scripts": {
